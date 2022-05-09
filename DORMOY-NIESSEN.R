@@ -5,8 +5,8 @@ graphics.off()
 ############################
 #### A COMPLETER:
 grp_id = 'T' #√† remplacer par le nom de votre groupe (voir sur Edunao)
-setwd("~/Documents/projets_git/stats-avancees-DM") # pour Ines
-# mets ici ta ligne nat
+#setwd("~/Documents/projets_git/stats-avancees-DM") # pour Ines
+setwd("C:/Users/natan/Documents/2A/Statistiques avancÈes/DM/stats-avancees-DM") #pour Natascha
 
 ############################
 #### A NE PAS TOUCHER:
@@ -22,6 +22,7 @@ data_poll = data_poll[idx, ]
 #### 1. Faire une ou des repr√©sentation(s) graphique(s) unidimensionnelle(s) des donn√©es et commenter
 df = data_poll
 dim(df) # 80 13
+head(df)
 summary(df)
 
 # we replace the character values by numbers 
@@ -39,23 +40,38 @@ summary(df)
 
 par(mfrow=c(1,2),oma=c(0,0,3,0))    
 pluie.table=table(df$pluie)
-pie(pluie.table,col=rainbow(4),main="Ratio des jours de pluie")
-title(main="Plots des jours de vent et de",
+labels <- c("Sec", "Pluie")
+pie(pluie.table,labels, col=rainbow(4),main="Ratio des jours de pluie", radius = 0.9)
+title(main="Plots des jours de vent et de pluie",
       outer=TRUE)
 
 vent.table=table(df$vent)
-pie(vent.table,col=rainbow(4),main="Ratio des jours de vent")
+labels2 <- c("Nord", "Ouest", "Sud", "Est")
+pie(vent.table, labels2, col=rainbow(4),main="Ratio des jours de vent", radius = 0.9)
 
+par(mfrow=c(1,1),oma=c(0,0,3,0))
 plot(df$pollution, main="Pollution en fonction du point dans le dataset")
 
+library(ggplot2)
+library(reshape2)
+df2=df[c("pollution","T9", "T12", "T15")]
+df2 = melt(df2, id.vars = "pollution", measure.vars = c("T9", "T12", "T15"))
+
+ggplot(df2,aes(x=variable,y=value,group=pollution,colour=pollution)) + 
+  geom_line() + ggtitle("TempÈratures mesurÈes aux diffÈrentes heures de la journÈe pour chaque point") + xlab('Horaire de la mesure') + ylab('Temperature')
+
+df3=df[c("pollution","Ne9","Ne12","Ne15")]
+df3=melt(df3, id.vars = "pollution", measure.vars = c("Ne9","Ne12","Ne15"))
+par(mfrow=c(1,1),oma=c(0,0,3,0))
+ggplot(df3,aes(x=variable,y=value,group=pollution,colour=pollution)) + 
+  geom_line() + ggtitle("NÈbulositÈ mesurÈe aux diffÈrentes heures de la journÈe pour chaque point") + xlab('Horaire de la mesure') + ylab('NÈbulositÈ')
+
+#-----------¿ voir si on garde ce plot------------
 plot(df$T9, type = "l", col = 1)  # Plot with Base R
 lines(df$T12, type = "l", col = 2)
 lines(df$T15, type = "l", col = 3)
 title(main="Temp√©ratures aux diff√©rentes heures de la joun√©e pour chaque point",
       outer=FALSE)
-
-# il faut encore taffer sur cette question au niveau des plots et voir ce qu'il serait pertinent de commenter
-
 
 
 
