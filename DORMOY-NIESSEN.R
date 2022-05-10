@@ -78,10 +78,15 @@ title(main="Températures aux différentes heures de la jounée pour chaque poin
 ############################
 #### 2. Faire une ou des représentation(s) graphique(s) illustrant les corrélations entre les variables et
 #commenter.
-pairs(df) #trace tous les graphes à 2 variables possibles
 
+pairs(df, main = "Nuages de points - corr�lation entre les variables") #trace tous les graphes à 2 variables possibles
 # les variables de température semblent assez corrélées entre elles
 # pareil pour les variables Vx
+
+library(corrplot)
+par(mfrow=c(1,1),oma=c(0,0,1,0))
+corrplot(cor(df), main = "Corr�lation entre les variables", outer = TRUE)
+
 
 
 ############################
