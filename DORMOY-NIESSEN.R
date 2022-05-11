@@ -72,12 +72,7 @@ df4=melt(df4, id.vars = "pollution", measure.vars = c("Vx9","Vx12","Vx15"))
 par(mfrow=c(1,1),oma=c(0,0,3,0))
 ggplot(df4,aes(x=variable,y=value,group=pollution,colour=pollution)) + 
   geom_line() + ggtitle("Vx mesur?e aux diff?rentes heures de la journ?e pour chaque point") + xlab('Horaire de la mesure') + ylab('Vx')
-#-----------? voir si on garde ce plot------------
-plot(df$T9, type = "l", col = 1)  # Plot with Base R
-lines(df$T12, type = "l", col = 2)
-lines(df$T15, type = "l", col = 3)
-title(main="Températures aux différentes heures de la jounée pour chaque point",
-      outer=FALSE)
+
 
 
 
