@@ -5,8 +5,8 @@ graphics.off()
 ############################
 #### A COMPLETER:
 grp_id = 'T' #à remplacer par le nom de votre groupe (voir sur Edunao)
-#setwd("~/Documents/projets_git/stats-avancees-DM") # pour Ines
-setwd("C:/Users/natan/Documents/2A/Statistiques avanc�es/DM/stats-avancees-DM") #pour Natascha
+setwd("~/Documents/projets_git/stats-avancees-DM") # pour Ines
+#setwd("C:/Users/natan/Documents/2A/Statistiques avanc?es/DM/stats-avancees-DM") #pour Natascha
 
 ############################
 #### A NE PAS TOUCHER:
@@ -58,15 +58,15 @@ df2=df[c("pollution","T9", "T12", "T15")]
 df2 = melt(df2, id.vars = "pollution", measure.vars = c("T9", "T12", "T15"))
 
 ggplot(df2,aes(x=variable,y=value,group=pollution,colour=pollution)) + 
-  geom_line() + ggtitle("Temp�ratures mesur�es aux diff�rentes heures de la journ�e pour chaque point") + xlab('Horaire de la mesure') + ylab('Temperature')
+  geom_line() + ggtitle("Temp?ratures mesur?es aux diff?rentes heures de la journ?e pour chaque point") + xlab('Horaire de la mesure') + ylab('Temperature')
 
 df3=df[c("pollution","Ne9","Ne12","Ne15")]
 df3=melt(df3, id.vars = "pollution", measure.vars = c("Ne9","Ne12","Ne15"))
 par(mfrow=c(1,1),oma=c(0,0,3,0))
 ggplot(df3,aes(x=variable,y=value,group=pollution,colour=pollution)) + 
-  geom_line() + ggtitle("N�bulosit� mesur�e aux diff�rentes heures de la journ�e pour chaque point") + xlab('Horaire de la mesure') + ylab('N�bulosit�')
+  geom_line() + ggtitle("N?bulosit? mesur?e aux diff?rentes heures de la journ?e pour chaque point") + xlab('Horaire de la mesure') + ylab('N?bulosit?')
 
-#-----------� voir si on garde ce plot------------
+#-----------? voir si on garde ce plot------------
 plot(df$T9, type = "l", col = 1)  # Plot with Base R
 lines(df$T12, type = "l", col = 2)
 lines(df$T15, type = "l", col = 3)
@@ -79,13 +79,13 @@ title(main="Températures aux différentes heures de la jounée pour chaque poin
 #### 2. Faire une ou des représentation(s) graphique(s) illustrant les corrélations entre les variables et
 #commenter.
 
-pairs(df, main = "Nuages de points - corr�lation entre les variables") #trace tous les graphes à 2 variables possibles
+pairs(df, main = "Nuages de points - corr?lation entre les variables") #trace tous les graphes à 2 variables possibles
 # les variables de température semblent assez corrélées entre elles
 # pareil pour les variables Vx
 
 library(corrplot)
 par(mfrow=c(1,1),oma=c(0,0,1,0))
-corrplot(cor(df), main = "Corr�lation entre les variables", outer = TRUE)
+corrplot(cor(df), main = "Correlation entre les variables", outer = TRUE)
 
 
 
@@ -120,7 +120,7 @@ summary(lm1)
 # le vent a une p-value très élevée, alors que selon notre graphique de la question 3, cette variable aurait pu être significative
 
 
-############################
+############################ AA
 #### 6. Que vaut l’estimation du paramètre associé à la variable Vx12 ? Que vaut son écart-type ? Poser
 #précisément un test pour savoir si cette variable a une influence dans le modèle ou pas. Que vaut
 #la statistique de test observée ? Quelle décision prenez-vous et à quel risque ?
@@ -133,24 +133,31 @@ param_estim # 1.21385
 confint(lm1)
 lm1$coefficients 
 
-# il me semble que vu que beta_est est dans l'intervalle de confiance, on garde ce parametre
-# mais il faudra voir la correction de la question 1.6 du tp2 sur edunao parce que je suis pas sure
-# dans cette correction ils expliquent pourquoi c'est ok de virer la variable age je sais plus pourquoi
+# IC pour Vx12 -1.2665077  3.6942075, beta est est dans l'IC, on conclut donc que cette variable a une influence
+# dans le modèle au risque 5%
+# Que vaut la statistique de test observée ? -> à voir
 
 
-
-############################
+############################ AA
 #### 7. La variable Vx15 est-elle significative au risque 5% ? Expliquer pourquoi ce résultat peut paraître
 #étonnant.
 
-# la meme il faut check le corrigé
+param_estim = lm1$coefficients[10]
+param_estim # 0.1501186 
 
-############################
+confint(lm1)
+
+# IC pour Vx15 -2.0102089  2.3104461, beta est est dans l'IC, on conclut donc que cette variable est significative
+# dans le modèle au risque 5%
+# ce résultat peut paraître étonnant car Vx15 est fortement corrélée à Vx12
+
+
+############################ AA
 #### 8. Construire le test de significativité globale de la régression . Quelle est votre décision ici ?
 
 summary(lm1)
 # p-value: < 2.2e-16, la régression est significative
-# a check dans le corrigé du tp2, autour des questons 1.7 1.8
+# sinon on peut faire avec fisher à la question 1.7 
 
 
 ############################
