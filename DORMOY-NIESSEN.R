@@ -24,6 +24,7 @@ df = data_poll
 dim(df) # 80 13
 head(df)
 summary(df)
+df_text = df
 
 # we replace the character values by numbers 
 # pluie = 1, sec  = 0
@@ -90,7 +91,11 @@ pairs(df, main = "Nuages de points - corr?lation entre les variables") #trace to
 
 library(corrplot)
 par(mfrow=c(1,1),oma=c(0,0,1,0))
-corrplot(cor(df), main = "Correlation entre les variables", outer = TRUE)
+corrplot(cor(df), main = "Correlation entre les variables")
+
+par(mfrow=c(1,1),oma=c(3,0,1,0))
+df_matrix = as.matrix(df)
+heatmap(df_matrix, scale="column",main = "Heatmap")
 
 
 
@@ -98,12 +103,11 @@ corrplot(cor(df), main = "Correlation entre les variables", outer = TRUE)
 #### 3. Faites une figure représentant la pollution en fonction de la variable Vx12 et en fonction de la
 #direction du vent. Que remarquez-vous ?
 
-plot(df$vent,df$pollution, main="Pollution en fonction du vent")
-
-
-# la pollution semble élevée quand le vent vient de l'est
-# mais il y a moins de réalisations dans le dataset de vent venant de l'est, donc c'est moins significatif
-# la pollution semble basse quand le vent vient du nord, et moyenne quand le vent vient de l'ouest ou du sud
+ggplot() +
+  geom_point(data = df_text, 
+             mapping = aes(x = vent, 
+                           y = Vx12, 
+                           colour = pollution)) + ggtitle("Graphe vent - Vx12 color� pour la pollution") + theme(plot.title = element_text(hjust = 0.5))
 
 ############################
 # 4. Décrire le modèle de régression linéaire pour expliquer la corrélation entre la variable pollution et
