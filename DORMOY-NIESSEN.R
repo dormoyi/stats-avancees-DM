@@ -66,6 +66,11 @@ par(mfrow=c(1,1),oma=c(0,0,3,0))
 ggplot(df3,aes(x=variable,y=value,group=pollution,colour=pollution)) + 
   geom_line() + ggtitle("N?bulosit? mesur?e aux diff?rentes heures de la journ?e pour chaque point") + xlab('Horaire de la mesure') + ylab('N?bulosit?')
 
+df4=df[c("pollution","Vx9","Vx12","Vx15")]
+df4=melt(df4, id.vars = "pollution", measure.vars = c("Vx9","Vx12","Vx15"))
+par(mfrow=c(1,1),oma=c(0,0,3,0))
+ggplot(df4,aes(x=variable,y=value,group=pollution,colour=pollution)) + 
+  geom_line() + ggtitle("Vx mesur?e aux diff?rentes heures de la journ?e pour chaque point") + xlab('Horaire de la mesure') + ylab('Vx')
 #-----------? voir si on garde ce plot------------
 plot(df$T9, type = "l", col = 1)  # Plot with Base R
 lines(df$T12, type = "l", col = 2)
@@ -95,6 +100,7 @@ corrplot(cor(df), main = "Correlation entre les variables", outer = TRUE)
 
 plot(df$vent,df$pollution, main="Pollution en fonction du vent")
 
+
 # la pollution semble élevée quand le vent vient de l'est
 # mais il y a moins de réalisations dans le dataset de vent venant de l'est, donc c'est moins significatif
 # la pollution semble basse quand le vent vient du nord, et moyenne quand le vent vient de l'ouest ou du sud
@@ -109,6 +115,11 @@ plot(df$vent,df$pollution, main="Pollution en fonction du vent")
 
 ############################
 #### 5. Faire tourner ce modèle lm1 sur R. Commenter
+
+df = data_poll
+dim(df) # 80 13
+head(df)
+summary(df)
 
 lm1=lm(pollution~.,data=df)
 summary(lm1)
@@ -126,14 +137,14 @@ summary(lm1)
 #la statistique de test observée ? Quelle décision prenez-vous et à quel risque ?
 
 param_estim = lm1$coefficients[9]
-param_estim # 1.21385
+param_estim # 0.727194
 
-# ecart-type = 1.24266 (affiché dans le summary)
+# ecart-type = 1.45177 (affiché dans le summary)
 
 confint(lm1)
 lm1$coefficients 
 
-# IC pour Vx12 -1.2665077  3.6942075, beta est est dans l'IC, on conclut donc que cette variable a une influence
+# IC pour Vx12 -2.1721912  3.6265793, beta est est dans l'IC, on conclut donc que cette variable a une influence
 # dans le modèle au risque 5%
 # Que vaut la statistique de test observée ? -> à voir
 
@@ -143,7 +154,8 @@ lm1$coefficients
 #étonnant.
 
 param_estim = lm1$coefficients[10]
-param_estim # 0.1501186 
+param_estim # 0.0781831 
+
 
 confint(lm1)
 
@@ -169,7 +181,7 @@ summary(lm1)
 #choisi (ici on va prendre la p-value), on s’arrête dès que le fait de retirer une nouvelle variable
 #diminue les performances du modèle.
 
-summary(lm1) # Adjusted R-squared:  0.7395 
+summary(lm1) # Adjusted R-squared:  0.7373 
 lm2=lm(pollution~T9+T12+T15+Ne9+Ne12+Ne15+Vx9+Vx12+Vx15+vpollution+pluie,data=df) # on enlève vent
 summary(lm2) # Adjusted R-squared:  0.7433 
 lm3=lm(pollution~T9+T12+T15+Ne9+Ne15+Vx9+Vx12+Vx15+vpollution+pluie,data=df) # on enlève Ne12
@@ -178,8 +190,8 @@ lm4=lm(pollution~T9+T12+T15+Ne9+Ne15+Vx9+Vx12+vpollution+pluie,data=df) # on enl
 summary(lm4) # Adjusted R-squared:  0.7504 
 lm5=lm(pollution~T9+T12+T15+Ne9+Ne15+Vx12+vpollution+pluie,data=df) # on enlève Vx9
 summary(lm5) # Adjusted R-squared:  0.7537 
-lm6=lm(pollution~T9+T12+Ne9+Ne15+Vx12+vpollution+pluie,data=df) # on enlève T15
 summary(lm6) # Adjusted R-squared:  0.7567 
+lm6=lm(pollution~T9+T12+Ne9+Ne15+Vx12+vpollution+pluie,data=df) # on enlève T15
 lm7=lm(pollution~T9+T12+Ne9+Vx12+vpollution+pluie,data=df) # on enlève Ne15
 summary(lm7) # Adjusted R-squared:  0.7573 
 lm8=lm(pollution~T9+T12+Ne9+Vx12+vpollution,data=df) # on enlève pluie
