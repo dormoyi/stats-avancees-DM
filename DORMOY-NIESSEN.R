@@ -248,17 +248,17 @@ lmf = lm8
 # fenetre en 2x2,  marge haute pour titre general
 par(mfrow=c(2,2), oma=c(0,0,2,0)) 
 
-plot(lmf$fitted,df$pollution,main="ajustes/observes") # pour voir si la variation est alÃ©atoire (bien rÃ©partie sur la droite, et de meme variance)
+plot(lmf$fitted,df$pollution,main="ajustées/observées") # pour voir si la variation est alÃ©atoire (bien rÃ©partie sur la droite, et de meme variance)
 abline(0,1)
 # ici les rÃ©sidus sont bien rÃ©partis de part et d'autre de la droite, la distribution semble normale
 
 
-plot(lmf$fitted,lmf$residuals,main="differents residus",ylim=c(-3,3))
+plot(lmf$fitted,lmf$residuals,main="différents résidus",ylim=c(-3,3))
 abline(h=0,lty=2)
 
 library(MASS)
 plot(lmf$fitted,stdres(lmf), col=2,pch=2 ,ylim=c(-3,3),
-     main="rÃ©sidus standardisÃ©s et studentisÃ©s")
+     main="résidus standardisés et studentisés")
 points(lmf$fitted,studres(lmf),col=3,pch=3) 
 abline(h=2); abline(h=-2); abline(h=0,lty=2)
 legend("bottomright",c( "stdres", "studres"),col=2:3, pch=2:3,cex=0.5)
@@ -268,9 +268,8 @@ qqnorm(studres(lmf),main="quantile-quantile plot")
 qqline(studres(lmf))
 
 # 
-title(main="Validation en rÃ©gression linÃ©aire multiple", outer=TRUE)
+title(main="Validation du modèle obtenu par la méthode descendante", outer=TRUE)
 
-# 2.par(mfrow=c(2,2))
+
 plot(lmf) # residus en fonction y chapeau, quantiles, distance de cook et points leviers (ici pas de points avec des distances trop grandes)
 
-# il va falloir commenter ces graphiques, il y aura sÃ»rement plus de pistes dans le corrigÃ© du tp2
